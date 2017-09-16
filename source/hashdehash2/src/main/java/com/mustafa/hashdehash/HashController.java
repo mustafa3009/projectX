@@ -1,8 +1,12 @@
 package com.mustafa.hashdehash;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +23,22 @@ import com.google.common.hash.Hashing;
 @RestController
 public class HashController {
 	
+	
+	@Autowired
+    private DiscoveryClient discoveryClient;
+
+	@Value("${spring.application.name}")
+	private String appName;
+	
+	@Value("${server.port}")
+	private String appPort;
+	
+	
+	@RequestMapping("/service-instances/{applicationName}")
+    public List<ServiceInstance> serviceInstancesByApplicationName(
+            @PathVariable String applicationName) {
+        return this.discoveryClient.getInstances(applicationName);
+    }
 
 	@Autowired
 	private HashService hashService;
@@ -27,6 +47,7 @@ public class HashController {
 	@RequestMapping (value="/messages", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	public Digest setHashFromMsg (@RequestBody Message msg) {
+		System.out.println("Received POST request on" + appName + ":" + appPort + " MsgRequest: " + msg);
 		//Use guava for hashing hash
 		String digest = Hashing.sha256()
 				  .hashString(msg.getMessage(), StandardCharsets.UTF_8)
@@ -42,6 +63,7 @@ public class HashController {
 	//Request handler to retrieve existing messages for supplied digest by searching the local cache. If there is no message found then it returns 404.
 	@RequestMapping (value="/messages/{hash}", method=RequestMethod.GET)
 	public Message getMsgFromHash (@PathVariable("hash") Digest hash) {
+		System.out.println("Received GET request on" + appName + ":" + appPort + " HashRequest:" + hash);
 		String msg = hashService.getMessage(hash.getDigest());
 		
 		if ( null != msg) {		
