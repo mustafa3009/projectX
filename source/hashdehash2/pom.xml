@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.mustafa</groupId>
-	<artifactId>hashdehash2</artifactId>
+	<artifactId>hashdehash</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
-	<name>hashdehash2</name>
+	<name>hashdehash</name>
 	<description>Project for hashing and retrieving messages</description>
 
 	<parent>
