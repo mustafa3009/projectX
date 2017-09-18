@@ -1,4 +1,4 @@
-package com.mustafa.hashdehash;
+package com.mustafa.hashdehash.domain;
 
 public class Digest {
 	

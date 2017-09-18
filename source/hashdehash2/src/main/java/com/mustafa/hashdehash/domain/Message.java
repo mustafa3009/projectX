@@ -1,4 +1,4 @@
-package com.mustafa.hashdehash;
+package com.mustafa.hashdehash.domain;
 
 //Message POJO for facilitating automatic JSON conversion in the request handlers implemented in HashCOntroller.java
 public class Message {

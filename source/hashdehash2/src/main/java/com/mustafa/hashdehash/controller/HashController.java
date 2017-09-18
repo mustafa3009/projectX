@@ -1,4 +1,4 @@
-package com.mustafa.hashdehash;
+package com.mustafa.hashdehash.controller;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.hash.Hashing;
+import com.mustafa.hashdehash.MessageNotFoundException;
+import com.mustafa.hashdehash.domain.Digest;
+import com.mustafa.hashdehash.domain.Message;
+import com.mustafa.hashdehash.service.HashService;
 
 
 
@@ -53,6 +57,7 @@ public class HashController {
 				  .hashString(msg.getMessage(), StandardCharsets.UTF_8)
 				  .toString();
 		
+		System.out.println("Set message digest:" + digest);
 		//Add to hashmap
 		hashService.setMessage(digest, msg.getMessage());
 		
