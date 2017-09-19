@@ -5,10 +5,10 @@ MAINTAINER "Mustafa K"
 
 #Create a folder and copy the paxos folder contents
 RUN mkdir -p /opt/eureka
-COPY discovery-server-1.0.jar /opt/eureka
+COPY run_eureka.sh discovery-server-1.0.jar /opt/eureka/
  
 #Open the port 5000
-#EXPOSE 5000
+#EXPOSE 8761
 	
 # Start App
-CMD java -jar /opt/eureka/discovery-server-1.0.jar
+CMD /opt/eureka/run_eureka.sh

@@ -1,8 +1,9 @@
-version: '3'
+version: '2'
 services:
     hashdehash:
         build:
             context: service/.
+        command: /bin/ash -c "sleep 15 && echo ' -- Pausing to let system catch up ... -->' && /opt/service/run_service.sh"
         restart: on-failure
         logging:
             driver: "json-file"
@@ -11,7 +12,8 @@ services:
                 max-file: "5"
         depends_on:
             - discovery-server
-
+            - cassandra0
+            
     discovery-server:
         build:
             context: eureka/.
@@ -27,3 +29,86 @@ services:
         depends_on:
             - discovery-server
         restart: on-failure
+
+
+    cassandra0:
+        image: cassandra
+        container_name: cassandra0
+        mem_limit: 3072m
+        ports:
+            - 9042:9042
+            - 7199:7199
+
+    cassandra1:
+       image: cassandra
+       container_name: cassandra1
+       mem_limit: 3072m
+       command: /bin/bash -c "sleep 30 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+
+       ports:
+            - 9142:9042
+       links:
+            - cassandra0:seed
+       environment:
+            - CASSANDRA_SEEDS=seed
+
+#    cassandra2:
+#       image: cassandra
+#       container_name: cassandra2
+#       mem_limit: 3072m
+#       command: /bin/bash -c "sleep 60 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+#       ports:
+#            - 9242:9042
+#       links:
+#            - cassandra0:seed
+#       environment:
+#           - CASSANDRA_SEEDS=seed
+        
+
+        
+#   cassandra-1:
+#        hostname: cassandra-1
+#        image: cassandra:latest
+#        command: /bin/bash -c "/docker-entrypoint.sh cassandra -f"
+#        expose:
+#            - 7000
+#            - 7001
+#            - 7199
+#            - 9042
+#            - 9160
+#        volumes: # uncomment if you desire mounts, also uncomment cluster.sh
+#            - ./data/cassandra-1:/var/lib/cassandra:rw
+#
+#    cassandra-2:
+#       hostname: cassandra-2
+#       image: cassandra:latest
+#       command: /bin/bash -c "sleep 20 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+#       environment:
+#           - CASSANDRA_SEEDS=cassandra-1
+#       expose:
+#           - 7000
+#           - 7001
+#           - 7199
+#           - 9042
+#           - 9160
+#       volumes: # uncomment if you desire mounts, also uncomment cluster.sh
+#           - ./data/cassandra-2:/var/lib/cassandra:rw
+#       depends_on:
+#           - cassandra-1
+        
+#    cassandra-3:
+#        hostname: cassandra-3
+#        image: cassandra:latest
+#        command: /bin/bash -c "sleep 10 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+#        environment:
+#            - CASSANDRA_SEEDS=cassandra-1
+#        expose:
+#            - 7000
+#            - 7001
+#            - 7199
+#            - 9042
+#            - 9160
+#        volumes: # uncomment if you desire mounts, also uncomment cluster.sh
+#            - /data/cassandra-3:/var/lib/cassandra:rw
+#        depends_on:
+#            - cassandra-1     
