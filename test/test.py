@@ -69,7 +69,7 @@ if __name__ == '__main__':
     if not os.path.exists(args.cert_path):
         raise Exception('No Certificate File Found at {}'.format(args.cert_path))
 
-    BASE_URL = 'https://{}:{}'.format(args.domain, args.port)
+    BASE_URL = 'https://{}:{}/api/hashdehash'.format(args.domain, args.port)
 
     # GET a digest for a message that doesn't exist
     _assert_digest_not_found(

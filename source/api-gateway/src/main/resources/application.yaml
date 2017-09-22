@@ -20,8 +20,12 @@ eureka:
     registerWithEureka: false
 
 server:
-  port: 8765
-  
+    port: 8765
+    ssl:
+      key-store: /Users/mk/projects/projectX/docker/zuul/keystore.p12
+      key-store-password: 12345
+      keyStoreType: PKCS12
+      keyAlias: tomcat
 #server:
 #  ssl:
 #    key-store: /Users/mk/projects/projectX/docker/zuul/keystore.p12
