@@ -3,7 +3,7 @@ services:
     hashdehash:
         build:
             context: service/.
-        command: /bin/ash -c "sleep 15 && echo ' -- Pausing to let system catch up ... -->' && /opt/service/run_service.sh"
+        command: /bin/ash -c "echo ' -- Pausing to let system catch up ... -->' && /opt/service/wait-for-it.sh -t 60 -h cassandra0 -p 9042  && /opt/service/wait-for-it.sh -t 60 -h discovery-server -p 8761 && /opt/service/run_service.sh"
         restart: on-failure
         logging:
             driver: "json-file"
@@ -18,7 +18,7 @@ services:
         build:
             context: eureka/.
         ports:
-            - 8761
+            - 8761:8761
         restart: on-failure
         
     api-gateway:
@@ -43,7 +43,7 @@ services:
        image: cassandra
        container_name: cassandra1
        mem_limit: 4096m
-       command: /bin/bash -c "sleep 30 && echo ' -- Pausing to let system catch up ... -->' && /docker-entrypoint.sh cassandra -f"
+       command: /bin/bash -c "echo ' -- Pausing to let system catch up ... -->' && sleep 20s && /docker-entrypoint.sh cassandra -f"
 
        ports:
             - 9142:9042
