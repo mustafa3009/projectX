@@ -30,12 +30,16 @@ node {
             sh 'cp source/discovery-server/target/discovery-server-1.0.jar docker/eureka/'
         }
         
-        stage ('Start services') {
+        stage ('Starting services') {
             dir ('docker') {
                 sh '/usr/local/bin/docker-compose up -d'
             }
-            sleep 15
+            sleep 30
             
+            dir ('docker') {
+                sh '/usr/local/bin/docker-compose scale hashdehash=3'
+            }
+            sleep 20
         }
         
         stage ('Test') {
