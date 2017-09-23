@@ -25,7 +25,7 @@ node {
 			parallel steps
         }
         
-        stage ('Copy Jars....') {
+        stage ('Copy Jars to docker folder') {
             sh 'cp source/hashdehash2/target/hashdehash-1.0.jar docker/service/'
             sh 'cp source/api-gateway/target/api-gateway-1.0.jar docker/zuul/'
             sh 'cp source/discovery-server/target/discovery-server-1.0.jar docker/eureka/'
