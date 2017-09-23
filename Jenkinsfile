@@ -31,6 +31,13 @@ node {
             sh 'cp source/discovery-server/target/discovery-server-1.0.jar docker/eureka/'
         }
         
+        stage ('Archive') {
+     //       archiveArtifacts 'source/hashdehash2/target/*.jar', 
+     //                       'source/api-gateway/target/*.jar',
+     //                       'source/discovery-server/target/*.jar'
+        	archiveArtifacts 'source/**/target/*.jar
+        }
+        
         stage ('Deploying services') {
             dir ('docker') {
                 sh '/usr/local/bin/docker-compose down'
@@ -49,11 +56,7 @@ node {
             
         }
        
-        stage ('Archive') {
-            archiveArtifacts 'source/hashdehash2/target/*.jar', 
-                            'source/api-gateway/target/*.jar',
-                            'source/discovery-server/target/*.jar'
-        }
+      	
        notify ('Success') 
 
     } catch (err) {
