@@ -37,7 +37,7 @@ node {
                 sh '/usr/local/bin/docker-compose up -d'
                 sleep 60
                 sh '/usr/local/bin/docker-compose scale hashdehash=3'
-                sleep 60
+                sleep 120
             }
         }
         
