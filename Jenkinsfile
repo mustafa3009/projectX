@@ -6,22 +6,23 @@ node {
         }
         
         stage ('Build') {
-            parallel buildService: {
-                def srcPath = 'source/hashdehash2'
-                dir (srcPath) {
-                sh 'mvn clean package'
-                }    
-            }, buildApiGatewway: {
-                def srcPath = 'source/api-gateway'
-                dir (srcPath) {
-                sh 'mvn clean package'
-                }
-            }, buildServiceDiscovery: {
-                def srcPath = 'source/discovery-server'
-                dir (srcPath) {
-                sh 'mvn clean package'
-                }
-            }, failFast: true
+            def steps = [:]
+			steps["Service"] = {
+				dir ('source/hashdehash2') {
+                	sh 'mvn clean package'
+                } 
+			}
+			steps["Api Gateway"] = {
+				dir ('source/api-gateway') {
+                	sh 'mvn clean package'
+                }   
+			}
+			steps["Service Discovery"] = {
+				dir ('source/service-discovery') {
+                	sh 'mvn clean package'
+                }   
+			}
+			parallel steps
         }
         
         stage ('Copy Jars....') {
@@ -30,19 +31,17 @@ node {
             sh 'cp source/discovery-server/target/discovery-server-1.0.jar docker/eureka/'
         }
         
-        stage ('Starting services') {
+        stage ('Deploying services') {
             dir ('docker') {
+                sh '/usr/local/bin/docker-compose down'
                 sh '/usr/local/bin/docker-compose up -d'
-            }
-            sleep 30
-            
-            dir ('docker') {
+                sleep 30
                 sh '/usr/local/bin/docker-compose scale hashdehash=3'
+                sleep 60
             }
-            sleep 30
         }
         
-        stage ('Test') {
+        stage ('Run Tests') {
            // step 'Run tests'
             sh 'echo pwd && pwd'
             // sh 'pip install requests && python test/test.py --port 5000 --cert-path localcert/localhost.crt'
