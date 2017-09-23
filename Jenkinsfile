@@ -53,7 +53,7 @@ node {
         stage ('Archive') {
             archiveArtifacts 'source/hashdehash2/target/*.jar', 
                             'source/api-gateway/target/*.jar',
-                            'source/eureka/target/*.jar'
+                            'source/discovery-server/target/*.jar'
         }
        notify ('Success') 
 
