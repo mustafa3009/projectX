@@ -34,15 +34,15 @@ node {
             dir ('docker') {
                 sh '/usr/local/bin/docker-compose up -d'
             }
-            sleep 20
+            sleep 15
             
         }
         
         stage ('Test') {
-           // step 'Copy the jars to docker folder'
-            
+           // step 'Run tests'
+            sh 'echo pwd && pwd'
             // sh 'pip install requests && python test/test.py --port 5000 --cert-path localcert/localhost.crt'
-            sh 'python test/test.py --port 8765 --cert-path localcert/localhost.crt'
+            sh 'python test/test.py --domain localhost --port 8765 --cert-path localcert/localhost.crt'
             
         }
        
