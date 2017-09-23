@@ -35,7 +35,7 @@ node {
      //       archiveArtifacts 'source/hashdehash2/target/*.jar', 
      //                       'source/api-gateway/target/*.jar',
      //                       'source/discovery-server/target/*.jar'
-        	archiveArtifacts 'source/**/target/*.jar
+        	archiveArtifacts 'source/**/target/*.jar'
         }
         
         stage ('Deploying services') {
