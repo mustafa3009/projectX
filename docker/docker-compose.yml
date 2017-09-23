@@ -43,7 +43,7 @@ services:
        image: cassandra
        container_name: cassandra1
        mem_limit: 4096m
-       command: /bin/bash -c "echo ' -- Pausing to let system catch up ... -->' && sleep 20s && /docker-entrypoint.sh cassandra -f"
+       command: /bin/bash -c "echo ' -- Pausing to let system catch up ... -->' && sleep 30s && /docker-entrypoint.sh cassandra -f"
 
        ports:
             - 9142:9042

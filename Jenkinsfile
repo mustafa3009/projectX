@@ -36,9 +36,9 @@ node {
             dir ('docker') {
                 sh '/usr/local/bin/docker-compose down'
                 sh '/usr/local/bin/docker-compose up -d --build'
-                sleep 20
+                sleep 60
                 sh '/usr/local/bin/docker-compose scale hashdehash=3'
-                sleep 100
+                sleep 120
             }
         }
         
