@@ -18,7 +18,7 @@ node {
                 }   
 			}
 			steps["Service Discovery"] = {
-				dir ('source/service-discovery') {
+				dir ('source/discovery-server') {
                 	sh 'mvn clean package'
                 }   
 			}
