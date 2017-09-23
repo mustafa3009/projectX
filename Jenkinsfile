@@ -34,7 +34,7 @@ node {
       
         stage ('Deploying services') {
             dir ('docker') {
-                sh '/usr/local/bin/docker-compose down'
+              //  sh '/usr/local/bin/docker-compose down'
                 sh '/usr/local/bin/docker-compose up -d --build'
                 sleep 60
                 sh '/usr/local/bin/docker-compose scale hashdehash=3'
