@@ -1,4 +1,4 @@
-node {
+node  {
     try {
         stage ('Checkout') {
             //git 'https://github.com/mustafa3009/projectX'
@@ -8,18 +8,24 @@ node {
         stage ('Build') {
             def steps = [:]
 			steps["Service"] = {
-				dir ('source/hashdehash2') {
-                	sh 'mvn clean package'
-                } 
+				node {
+					dir ('source/hashdehash2') {
+                		sh 'mvn clean package'
+                	}
+            	}    	 
 			}
 			steps["Api Gateway"] = {
-				dir ('source/api-gateway') {
-                	sh 'mvn clean package'
-                }   
+				node {
+					dir ('source/api-gateway') {
+                		sh 'mvn clean package'
+                	}   
+				}
 			}
 			steps["Service Discovery"] = {
-				dir ('source/discovery-server') {
-                	sh 'mvn clean package'
+				node {
+					dir ('source/discovery-server') {
+                		sh 'mvn clean package'
+                	}
                 }   
 			}
 			parallel steps
