@@ -12,15 +12,29 @@ node  {
           
                
         stage ('Build') {
-			dir ('source/hashdehash2') {
-				sh 'mvn clean package'
+            def steps = [:]
+			steps["Service"] = {
+				node {
+					dir ('source/hashdehash2') {
+                		sh 'mvn clean package'
+                	}
+            	}    	 
 			}
-			dir ('source/api-gateway') {
-				sh 'mvn clean package'
-			}   
-			dir ('source/discovery-server') {
-				sh 'mvn clean package'
+			steps["Api Gateway"] = {
+				node {
+					dir ('source/api-gateway') {
+                		sh 'mvn clean package'
+                	}   
+				}
 			}
+			steps["Service Discovery"] = {
+				node {
+					dir ('source/discovery-server') {
+                		sh 'mvn clean package'
+                	}
+                }   
+			}
+			parallel steps
         }
         
         stage ('Copy Jars to docker folder') {
