@@ -31,18 +31,17 @@ node  {
 			parallel steps
         }
         
-        stage ('Copy Jars to docker folder') {
-            sh 'cp /repo/hashdehash-1.0.jar docker/service/'
-            sh 'cp /repo/api-gateway-1.0.jar docker/zuul/'
-            sh 'cp /repo/discovery-server-1.0.jar docker/eureka/'
-        }
-        
       
         stage ('Deploying services') {
+        	sh 'cp /repo/hashdehash-1.0.jar docker/service/'
+            sh 'cp /repo/api-gateway-1.0.jar docker/zuul/'
+            sh 'cp /repo/discovery-server-1.0.jar docker/eureka/'
+            
             dir ('docker') {
               //  sh '/usr/local/bin/docker-compose down'
                 sh '/usr/local/bin/docker-compose up -d'
                 sleep 30
+                
                 sh '/usr/local/bin/docker-compose scale hashdehash=3'
                 sleep 90
             }
