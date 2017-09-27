@@ -13,4 +13,21 @@ Installation of docker & jenkins
 	sudo yum install wget (if not already there)
 	https://pkg.jenkins.io/redhat-stable/
 7. Add jenkins to the docker group
-	sudo usermod -a -G docker jenkins 
+	sudo usermod -a -G docker jenkins
+8. Create a folder /repo and make jenkins the owner using the command
+	sudo chown jenkins:jenkins /repo
+9. Install an email simulator for the jenkins job using
+docker run -d -p 1025:1025 -p 8025:8025 mailhog/mailhog
+	You may need to open the following ports for external access
+	8025 - for mailhog client
+	8761 - Eureka (to view the web console)
+	8080 - Jenkins console
+	
+	Use the following commands and repeat them for the each of the port
+	sudo firewall-cmd --zone public --add-port 8080/tcp --permanent
+	sudo firewall-cmd --reload
+	sudo firewall-cmd --list-ports
+10. Create a pipeline job in jenkins and point to the following location for the jenkinsfile
+	https://github.com/mustafa3009/projectX
+
+ 
