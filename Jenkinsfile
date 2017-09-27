@@ -5,28 +5,32 @@ node  {
             checkout scm
         }
         
-        // stash name: 'everything', 
-        //  excludes: 'doc/**', 
-        //  includes: '**'
           
           
                
         stage ('Build') {
-			dir ('source/hashdehash2') {
-				sh 'mvn clean package'
-			}
-			dir ('source/api-gateway') {
-				sh 'mvn clean package'
-			}   
-			dir ('source/discovery-server') {
-				sh 'mvn clean package'
-			}
+        	stash name: 'hashdehash', 
+        	includes: 'source/hashdehash2/**/*'
+        	
+        	stash name: 'api-gateway', 
+        	includes: 'source/api-gateway/**/*'
+        	
+        	stash name: 'discovery-server', 
+        	includes: 'source/discovery-server/**/*'
+        
+			parallel service: {
+				buildPackage ('source/hashdehash2', 'hashdehash')
+			}, api-gateway: {
+				buildPackage ('source/api-gateway', 'api-gateway')
+			}, discovery-server: {
+				buildPackage ('source/discovery-server', 'discovery-server')
+			}	
         }
         
         stage ('Copy Jars to docker folder') {
-            sh 'cp source/hashdehash2/target/hashdehash-1.0.jar docker/service/'
-            sh 'cp source/api-gateway/target/api-gateway-1.0.jar docker/zuul/'
-            sh 'cp source/discovery-server/target/discovery-server-1.0.jar docker/eureka/'
+            sh 'cp /repo/hashdehash-1.0.jar docker/service/'
+            sh 'cp /repo/api-gateway-1.0.jar docker/zuul/'
+            sh 'cp /repo/discovery-server-1.0.jar docker/eureka/'
         }
         
       
@@ -34,9 +38,9 @@ node  {
             dir ('docker') {
               //  sh '/usr/local/bin/docker-compose down'
                 sh '/usr/local/bin/docker-compose up -d --build'
-                sleep 60
+                sleep 30
                 sh '/usr/local/bin/docker-compose scale hashdehash=3'
-                sleep 120
+                sleep 60
             }
         }
         
@@ -58,6 +62,18 @@ node  {
        currentBuild.result = 'FAILURE'
     }
 }
+    
+    def buildPackage (sourcePath, stashName) {
+    	node {
+			sh 'rm -rf *'
+        	unstash stashName
+        	dir (sourcePath) {
+				sh 'mvn clean package'
+			}
+			sh 'cp source/**/target/*.jar /repo'
+		}        			    	
+    }
+    
     
     def notify(status){
         emailext (
