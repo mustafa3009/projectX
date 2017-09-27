@@ -1,11 +1,16 @@
 Installation of docker & jenkins
 
-1. Provision a centos 7 VM using Virtual Box. Use the minimal install ISO and launch screen 
+1. Provision a centos 7 VM using Virtual Box. Use the minimal install ISO and launch screen. Make an admin user for all the installations
 2. sudo yum update -y
-3. Docker installation - https://docs.docker.com/engine/installation/linux/docker-ce/centos/
+3. Docker installation 
+	https://docs.docker.com/engine/installation/linux/docker-ce/centos/
 	Also do the post installation steps https://docs.docker.com/engine/installation/linux/linux-postinstall/
-4. sudo yum install git
+4. Git installation
+	sudo yum install git
 5. Maven installation
+	https://maven.apache.org/install.html
 6. Jenkins installation
+	sudo yum install wget (if not already there)
+	https://pkg.jenkins.io/redhat-stable/
 7. Add jenkins to the docker group
 	sudo usermod -a -G docker jenkins 
