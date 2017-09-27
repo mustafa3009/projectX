@@ -6,7 +6,7 @@ node  {
         }
         
           
-          
+            
                
         stage ('Build') {
         	stash name: 'hashdehash', 
@@ -17,14 +17,18 @@ node  {
         	
         	stash name: 'discovery-server', 
         	includes: 'source/discovery-server/**/*'
-        
-			parallel service: {
-				buildPackage ('source/hashdehash2', 'hashdehash')
-			}, api-gateway: {
+        	
+        	def steps = [:]
+			steps["Service"] = {
+				buildPackage ('source/hashdehash2', 'hashdehash')  	 
+			}
+			steps["Api Gateway"] = {
 				buildPackage ('source/api-gateway', 'api-gateway')
-			}, discovery-server: {
-				buildPackage ('source/discovery-server', 'discovery-server')
-			}	
+			}
+			steps["Service Discovery"] = {
+				buildPackage ('source/discovery-server', 'discovery-server')  
+			}
+			parallel steps
         }
         
         stage ('Copy Jars to docker folder') {
