@@ -55,9 +55,9 @@ node  {
             
         }
        
-        stage ('Archive') {
-        	archiveArtifacts 'source/**/target/*.jar'
-        }      	
+   //     stage ('Archive') {
+   //     	archiveArtifacts 'source/**/target/*.jar'
+   //     }      	
        notify ('Success') 
 
     } catch (err) {
