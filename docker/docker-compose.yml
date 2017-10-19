@@ -34,7 +34,7 @@ services:
     cassandra0:
         image: cassandra
         container_name: cassandra0
-        mem_limit: 4096m
+        mem_limit: 8192m
         ports:
             - 9042:9042
             - 7199:7199
