@@ -6,7 +6,7 @@ MAINTAINER "Mustafa K"
 #Add bash shell for wait-for-it script
 RUN apk add --update bash && rm -rf /var/cache/apk/*
 
-#Create a folder and copy the paxos folder contents
+#Create a folder and copy the folder contents
 RUN mkdir -p /opt/service
 
 COPY run_service.sh hashdehash-1.0.jar wait-for-it.sh /opt/service/
