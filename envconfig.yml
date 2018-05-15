@@ -1,0 +1,35 @@
+---
+pr:
+  start: 1
+  end: 6
+stage:
+  start: 7
+  end: 16
+pre-prod-release:
+  pcf:
+      pre-prod-release:
+        foundation: stl-stage
+        org: Alberta
+        space: src-stage
+        credid: alberta-pcf-credentials
+      prod-release:
+        foundation: stl-stage
+        org: Alberta
+        space: pr-int
+        credid: alberta-pcf-credentials
+  start: 17
+  end: 22
+prod-release:
+  pcf:
+      stage:
+        foundation: stl-stage
+        org: Alberta
+        space: src-stage
+        credid: alberta-pcf-credentials
+      pr:
+        foundation: stl-stage
+        org: Alberta
+        space: pr-int
+        credid: alberta-pcf-credentials
+  start: 23
+  end: 28
