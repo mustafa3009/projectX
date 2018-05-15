@@ -1,0 +1,26 @@
+---
+# root element which will contain all the pipeline config
+pipeline:
+  hostname: durable-data-service-watchmen
+  pcf:
+    stage:
+      foundation: stl-stage
+      org: Alberta
+      space: src-stage
+      credid: alberta-pcf-credentials
+    pr:
+      foundation: stl-stage
+      org: Alberta
+      space: pr-int
+      credid: alberta-pcf-credentials
+  credentialids:
+    stash: alberta-stash-credentials
+    artifactory: alberta-uploader
+    sonar: sonar-publisher
+  synapse:
+    clientname: identity-services-client
+  branch:
+    integration: develop
+  e2e:
+    entryurl: cersei.apps.stl.pcfstage00.mastercard.int
+  buildtestexecution: parallel #There can be two values: serial and parallel
